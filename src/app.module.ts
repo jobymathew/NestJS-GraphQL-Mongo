@@ -20,6 +20,7 @@ import { StudentModule } from './student/student.module';
       type: 'mongodb',
       url: 'mongodb://localhost/school',
       synchronize: true,
+      // MongoDB Specific
       useUnifiedTopology: true,
       entities: [
         Lesson,
