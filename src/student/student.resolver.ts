@@ -1,3 +1,4 @@
+import { NotFoundException } from "@nestjs/common";
 import { Args, Mutation, Resolver, Query } from "@nestjs/graphql";
 import { Study } from "src/graphql-types/study.type";
 import { DeleteResult } from "typeorm";
@@ -38,8 +39,11 @@ export class StudentResolver {
         @Args('id') id: string
     ) {
         const val = await this.studentService.deleteStudent(id);
-        console.log('Deleted');
-        console.log(val);
+
+        // if student not found
+        if (val.affected === 0) {
+            throw new NotFoundException('Student not found');
+        }
 
         return true;
     }
