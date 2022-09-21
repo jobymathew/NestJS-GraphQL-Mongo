@@ -44,6 +44,7 @@ type Mutation {
   assignStudentsToLesson(assignStudentsToLessonInput: AssignStudentsToLessonInput!): Lesson!
   createStudent(createStudentInput: CreateStudentInput!): Student!
   deleteStudent(id: String!): Boolean!
+  updateStudent(updateStudentInput: UpdateStudentInput!, id: String!): Student!
 }
 
 input CreateLessonInput {
@@ -62,4 +63,10 @@ input CreateStudentInput {
   firstName: String!
   lastName: String!
   status: String!
+}
+
+input UpdateStudentInput {
+  firstName: String
+  lastName: String
+  status: String
 }

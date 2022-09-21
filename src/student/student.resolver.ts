@@ -5,6 +5,7 @@ import { DeleteResult } from "typeorm";
 import { CreateStudentInput } from "./create-student.input";
 import { StudentService } from "./student.service";
 import { StudentType } from "./student.type";
+import { UpdateStudentInput } from "./update-student.input";
 
 
 @Resolver(of => StudentType)
@@ -46,6 +47,16 @@ export class StudentResolver {
         }
 
         return true;
+    }
+
+    // Update Student
+    @Mutation(returns => StudentType)
+    updateStudent(
+        @Args('updateStudentInput') updateStudentInput: UpdateStudentInput,
+        @Args('id') id: string,
+    ) {
+        return this.studentService.updateStudent(id, updateStudentInput);
+
     }
 
     @Query(returns => Study)

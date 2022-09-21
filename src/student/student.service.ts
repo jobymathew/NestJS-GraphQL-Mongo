@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateStudentInput } from './create-student.input';
 import { Student } from './student.entity';
 import { v4 as uuid } from 'uuid';
+import { UpdateStudentInput } from './update-student.input';
 
 @Injectable()
 export class StudentService {
@@ -13,7 +14,14 @@ export class StudentService {
     ) { }
 
     async getStudent(id: string): Promise<Student> {
-        return this.studentRepository.findOneBy({ id });
+        const found = await this.studentRepository.findOneBy({ id });
+
+        if (!found) {
+            throw new NotFoundException(`Task with ID ${id} not found`);
+            // throw new BadRequestException(`Task with ID ${id} not found`);
+        }
+
+        return found;
     }
 
     async getAllStudents(): Promise<Student[]> {
@@ -51,6 +59,31 @@ export class StudentService {
 
         return this.studentRepository.delete({ id });
         // return true;
+    }
+
+    // update student
+    async updateStudent(id: string, updateStudentInput: UpdateStudentInput): Promise<Student> {
+        const student = await this.getStudent(id);
+
+        if (updateStudentInput.firstName) {
+            student.firstName = updateStudentInput.firstName;
+        }
+
+        if (updateStudentInput.lastName) {
+            student.lastName = updateStudentInput.lastName;
+        }
+
+        if (updateStudentInput.status) {
+            student.status = updateStudentInput.status;
+        }
+
+        this.studentRepository.save(student);
+
+        return student;
+
+
+
+
     }
 
 
