@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { Status } from "src/enum/status.enum";
 
 
 @ObjectType('Student')
@@ -12,4 +13,11 @@ export class StudentType {
 
     @Field()
     lastName: string;
+
+    // @Field()
+    // status: string;
+
+    @Field(type => Status)
+    status: Status;
+
 }

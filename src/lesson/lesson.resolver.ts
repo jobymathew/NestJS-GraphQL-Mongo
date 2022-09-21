@@ -1,10 +1,12 @@
-import { Resolver, Query, Mutation, Args, ResolveField, Parent } from "@nestjs/graphql";
+import { Resolver, Query, Mutation, Args, ResolveField, Parent, Directive } from "@nestjs/graphql";
 import { AssignStudentsToLessonInput } from "./assign-students-to-lesson.input";
 import { CreateLessonInput } from "./lesson.input";
 import { LessonService } from "./lesson.service";
 import { LessonType } from "./lesson.type";
 import { Lesson } from '../lesson/lesson.entity';
 import { StudentService } from "src/student/student.service";
+import { ResultUnion } from "src/graphql-types/result-union.type";
+import { StudentType } from "src/student/student.type";
 
 
 @Resolver(of => LessonType)
@@ -16,6 +18,7 @@ export class LessonResolver {
     ) { }
 
     // query
+    @Directive('@deprecated(reason: "This query will be removed in the next version")')
     @Query(returns => LessonType)
     lesson(
         @Args('id') id: string,
@@ -51,6 +54,11 @@ export class LessonResolver {
     async students(@Parent() lesson: Lesson) {
         console.log(lesson);
         return this.studentService.getManyStudents(lesson.students);
+    }
+
+    @Query(returns => [ResultUnion])
+    search(): Array<typeof ResultUnion> {
+        return [new StudentType(), new LessonType()];
     }
 
 

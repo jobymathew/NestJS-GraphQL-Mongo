@@ -1,4 +1,6 @@
 import { Args, Mutation, Resolver, Query } from "@nestjs/graphql";
+import { Study } from "src/graphql-types/study.type";
+import { DeleteResult } from "typeorm";
 import { CreateStudentInput } from "./create-student.input";
 import { StudentService } from "./student.service";
 import { StudentType } from "./student.type";
@@ -28,5 +30,22 @@ export class StudentResolver {
         @Args('createStudentInput') createStudentInput: CreateStudentInput
     ) {
         return this.studentService.createStudent(createStudentInput);
+    }
+
+    // Delete student
+    @Mutation(returns => Boolean)
+    async deleteStudent(
+        @Args('id') id: string
+    ) {
+        const val = await this.studentService.deleteStudent(id);
+        console.log('Deleted');
+        console.log(val);
+
+        return true;
+    }
+
+    @Query(returns => Study)
+    getStudy() {
+        return 'Hi';
     }
 }

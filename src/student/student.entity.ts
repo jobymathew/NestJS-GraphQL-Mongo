@@ -1,3 +1,4 @@
+import { Status } from "src/enum/status.enum";
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from "typeorm";
 
 
@@ -15,5 +16,8 @@ export class Student {
 
     @Column()
     lastName: string;
+
+    @Column()
+    status: Status;
 
 }

@@ -1,0 +1,65 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Student {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  status: Status!
+}
+
+"""Pass status"""
+enum Status {
+  PASS
+  FAIL
+  PENDING
+}
+
+type Lesson {
+  id: ID!
+  name: String!
+  startDate: String!
+  endDate: String!
+  students: [Student!]!
+}
+
+type Study {
+  task: ResultUnion!
+}
+
+union ResultUnion = Student | Lesson
+
+type Query {
+  lesson(id: String!): Lesson!
+  lessons: [Lesson!]!
+  search: [ResultUnion!]!
+  student(id: String!): Student!
+  students: [Student!]!
+  getStudy: Study!
+}
+
+type Mutation {
+  createLesson(createLessonInput: CreateLessonInput!): Lesson!
+  assignStudentsToLesson(assignStudentsToLessonInput: AssignStudentsToLessonInput!): Lesson!
+  createStudent(createStudentInput: CreateStudentInput!): Student!
+  deleteStudent(id: String!): Boolean!
+}
+
+input CreateLessonInput {
+  name: String!
+  startDate: String!
+  endDate: String!
+  students: [ID!] = []
+}
+
+input AssignStudentsToLessonInput {
+  studentIds: [ID!]!
+  lessonId: ID!
+}
+
+input CreateStudentInput {
+  firstName: String!
+  lastName: String!
+  status: String!
+}
